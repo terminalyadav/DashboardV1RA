@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>V1RA — Sign In</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Outfit', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { box-sizing: border-box; }
+        body { background: #020203; }
+
+        /* ── Animated Background ── */
+        .bg-canvas {
+            position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #020203;
+        }
+
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(130px);
+            pointer-events: none; animation: drift 22s ease-in-out infinite alternate;
+        }
+        .orb1 { width: 55vw; height: 55vw; background: radial-gradient(circle, #5D5FEF, transparent 70%); opacity: 0.18; top: -15%; left: -12%; animation-delay: 0s; }
+        .orb2 { width: 42vw; height: 42vw; background: radial-gradient(circle, #06b6d4, transparent 70%); opacity: 0.14; bottom: -12%; right: -10%; animation-delay: -6s; animation-duration: 28s; }
+        .orb3 { width: 48vw; height: 48vw; background: radial-gradient(circle, #a855f7, transparent 70%); opacity: 0.10; top: 45%; left: 45%; transform: translate(-50%,-50%); animation-delay: -12s; animation-duration: 35s; }
+
+        @keyframes drift {
+            0%   { transform: translate(0,0) scale(1); }
+            33%  { transform: translate(60px,-60px) scale(1.08); }
+            66%  { transform: translate(-40px,50px) scale(0.94); }
+            100% { transform: translate(0,0) scale(1); }
+        }
+
+        .bg-grid {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            background-size: 56px 56px;
+        }
+
+        /* ── Card ── */
+        .login-card {
+            animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+            background: rgba(10, 10, 16, 0.7);
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(36px) saturate(180%);
+            -webkit-backdrop-filter: blur(36px) saturate(180%);
+            border-radius: 28px;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.04) inset,
+                0 50px 120px rgba(0,0,0,0.85),
+                0 0 80px rgba(93,95,239,0.07);
+        }
+
+        /* gradient border */
+        .login-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(93,95,239,0.5) 0%, rgba(6,182,212,0.2) 50%, transparent 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px) scale(0.97); filter: blur(12px); }
+            to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        /* ── Logo shimmer ── */
+        .logo-icon {
+            background: linear-gradient(135deg, #5D5FEF, #22d3ee);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.15) inset, 0 0 40px rgba(93,95,239,0.55), 0 0 80px rgba(93,95,239,0.2);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { box-shadow: 0 0 0 1px rgba(255,255,255,0.15) inset, 0 0 40px rgba(93,95,239,0.55), 0 0 80px rgba(93,95,239,0.2); }
+            50%       { box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset, 0 0 55px rgba(93,95,239,0.75), 0 0 100px rgba(93,95,239,0.3); }
+        }
+
+        /* ── Inputs ── */
+        .field-wrap { position: relative; }
+        .field-icon {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            font-size: 16px; pointer-events: none; opacity: 0.4;
+        }
+        .login-input {
+            width: 100%;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.09);
+            color: #fff;
+            border-radius: 14px;
+            padding: 13px 16px 13px 44px;
+            font-size: 14px; font-weight: 500;
+            outline: none;
+            transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+            font-family: 'Inter', sans-serif;
+        }
+        .login-input::placeholder { color: rgba(255,255,255,0.22); }
+        .login-input:focus {
+            background: rgba(0,0,0,0.4);
+            border-color: rgba(93,95,239,0.55);
+            box-shadow: 0 0 0 4px rgba(93,95,239,0.12), 0 0 20px rgba(93,95,239,0.15);
+        }
+
+        /* ── Submit Button ── */
+        .submit-btn {
+            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, #5D5FEF 0%, #06b6d4 100%);
+            border: none; border-radius: 14px;
+            padding: 14px 0; width: 100%;
+            color: #fff; font-weight: 700; font-size: 15px;
+            letter-spacing: 0.02em;
+            cursor: pointer; font-family: 'Outfit', sans-serif;
+            box-shadow: 0 4px 24px -4px rgba(93,95,239,0.65);
+            transition: transform 0.25s, box-shadow 0.25s, filter 0.25s;
+        }
+        .submit-btn::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
+            transform: translateX(-100%);
+            animation: shimmer 2.4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%   { transform: translateX(-100%); }
+            60%, 100% { transform: translateX(180%); }
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 36px -4px rgba(93,95,239,0.8); filter: brightness(1.1); }
+        .submit-btn:active { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        /* ── Divider ── */
+        .divider { display: flex; align-items: center; gap: 12px; }
+        .divider-line { flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+        .divider-text { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.12em; }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen overflow-hidden text-white font-sans px-4 py-6">
+
+    <!-- Background -->
+    <div class="bg-canvas">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+    </div>
+    <div class="bg-grid"></div>
+
+    <!-- Card -->
+    <div class="login-card relative z-10 w-full max-w-[420px] p-8 sm:p-10">
+
+        <!-- Inner top sheen -->
+        <div class="absolute inset-0 rounded-[28px] bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none"></div>
+
+        <!-- Logo + Brand -->
+        <div class="flex items-center gap-4 mb-9 relative z-10">
+            <div class="logo-icon w-14 h-14 rounded-2xl flex items-center justify-center text-3xl select-none shrink-0">⚡</div>
+            <div>
+                <h1 class="font-heading font-extrabold text-[22px] tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">V1RA</h1>
+                <p class="text-xs font-medium text-zinc-500 tracking-wide mt-0.5">Email Scraper Dashboard</p>
+            </div>
+        </div>
+
+        <!-- Form header -->
+        <div class="mb-7 relative z-10">
+            <h2 class="font-heading text-[26px] font-extrabold tracking-tight text-white">Welcome</h2>
+            <p class="text-[13px] text-zinc-500 mt-1 font-medium">Sign in to continue to your workspace</p>
+        </div>
+
+        <!-- Form -->
+        <form id="loginForm" onsubmit="login(event)" class="flex flex-col gap-4 relative z-10">
+            <!-- Username -->
+            <div>
+                <label class="block text-[10px] font-black text-zinc-500 uppercase tracking-[0.18em] mb-2">Username</label>
+                <div class="field-wrap">
+                    <span class="field-icon">👤</span>
+                    <input type="text" id="username" class="login-input" placeholder="v1ra@admin" autocomplete="username" required />
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div>
+                <label class="block text-[10px] font-black text-zinc-500 uppercase tracking-[0.18em] mb-2">Password</label>
+                <div class="field-wrap">
+                    <span class="field-icon">🔒</span>
+                    <input type="password" id="password" class="login-input" placeholder="••••••••" autocomplete="current-password" required />
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <button class="submit-btn mt-2" type="submit" id="loginBtn">Sign In →</button>
+
+            <!-- Error -->
+            <div class="hidden bg-red-500/10 border border-red-500/25 rounded-xl px-4 py-3 text-sm font-medium text-red-400 text-center" id="errorMsg">
+                ❌ Invalid credentials. Access denied.
+            </div>
+        </form>
+
+        <!-- Footer -->
+        <p class="text-center text-[11px] text-zinc-600 font-medium mt-8 relative z-10">V1RA · Secure Access · All rights reserved</p>
+    </div>
+
+    <script>
+        async function login(e) {
+            e.preventDefault();
+            const btn = document.getElementById('loginBtn');
+            const err = document.getElementById('errorMsg');
+
+            btn.disabled = true;
+            btn.textContent = 'Authenticating…';
+            err.classList.add('hidden');
+
+            try {
+                const r = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: document.getElementById('username').value,
+                        password: document.getElementById('password').value
+                    })
+                });
+                if (r.ok) {
+                    btn.textContent = '✓ Access Granted';
+                    window.location.href = '/dashboard';
+                } else {
+                    err.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.textContent = 'Sign In →';
+                }
+            } catch {
+                err.textContent = '⚡ Connection failed. Server offline.';
+                err.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Sign In →';
+            }
+        }
+    </script>
+</body>
+</html>

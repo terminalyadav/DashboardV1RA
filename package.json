@@ -1,0 +1,16 @@
+{
+  "name": "scraper-command-center",
+  "version": "2.0.0",
+  "description": "Full-stack operations command center for Cloud + Local scrapers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "csv-parse": "^5.5.2",
+    "express": "^4.18.2",
+    "googleapis": "^171.4.0",
+    "mongodb": "^6.3.0"
+  }
+}

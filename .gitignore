@@ -1,0 +1,6 @@
+node_modules/
+.env*
+cookies.txt
+nohup.out
+.DS_Store
+*.log
